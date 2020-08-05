@@ -1,0 +1,122 @@
+
+<head>
+	
+	<!-- start: Meta -->
+	<meta charset="utf-8">
+	<link id="dataTables-style" href="css/jquery.dataTables.css" rel="stylesheet">
+</head>
+<div class="col-md-12">
+<div class="alert alert-success hide" id="agregado">
+<button class="close" data-dismiss="alert">&times;</button>
+se Agrego el usuario correctamente
+</div>
+</div>
+<div class="col-md-12">
+<div class="col-md-12 titulo">
+<button class="btn btn-primary tip pull-left" id="llamar-nueva-venta" data-toggle="modal" data-target="#modalNuevo" title="abrir con Alt+n" data-intro="boton Para Agregar un nuevo usuario" data-position="right">
+<i class="fa fa-file-text-o"></i> Nuevo Tipo
+</button>
+
+<span>Gestion Tipos</span>
+
+<button class="btn btn-danger tip pull-right" id="boton-eliminar" title="Eliminar"  data-toggle="modal" data-target="#modalEliminar" data-position="left">
+Eliminar Tipo <i class="fa fa-close"></i>
+</button>
+<br><br>
+</div>
+
+<table class="table datatable" data-intro="Lista de Usuarios registrados" data-position="bottom">
+	<thead>
+	<tr>
+	<th>Codigo Tipo</th>
+	<th>Nombre</th>
+    <th>Precio Referencial</th>
+	<th>Estado</th>
+	<th></th>
+	</tr>
+	</thead>
+	<tbody>
+		#foreach($listipo in $xlista)
+		<tr>
+			<td>${listipo.codtipo} </td>
+            <td>${listipo.nombre} </td>
+            <td>${listipo.precioref} </td>
+			<td>
+                #if (${listipo.estado}==1)
+                <i class="fa fa-thumbs-o-up" style="color:#337ab7;"></i>      
+				#else
+				<i class="fa fa-thumbs-o-down" style="color:red;"></i> 
+				#end
+            </td>
+			<td><input type="checkbox" name=""></td>
+		</tr>
+		#end
+	</tbody>
+</table>
+<!--Modal Agregar nuevo Usuario-->
+</div>
+
+<div class="modal fade" id="modalNuevo">
+	<form action="agregar_producto.html" method="post" id="formu">
+		<div class="modal-dialog">
+			<div class="modal-content">
+			<!-- Cabecera del Modal-->
+				<div class="modal-header"  style="text-align:center;">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title">Nuevo tipo</h4>	
+				</div>
+				<!-- contenido del modal-->
+				<div class="modal-body well">
+				<div  class="row">
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label>Nombre </label>
+						<input type="text" name="titulo" class="form-control">
+						
+					</div>
+				</div>
+				<div class="col-xs-6">
+					<div class="form-group">
+					
+						<label>Precio</label>
+						<input type="text" name="precio" class="form-control">
+					</div>
+				</div>
+				</div>
+				</div>
+				<!--footer del modal-->
+				<div class="modal-footer">
+					<button class="btn btn-default btn-sm" data-dismiss="modal">Cerrar</button>
+					<button type="button" id="agregar_nuevo" class="btn btn-primary btn-sm ">Guardar</button>
+				</div>
+				</div>
+		</div>
+	</form>
+</div>
+<script src="js/jquery.dataTables.js"></script>
+<script type="text/javascript">
+	
+
+		$("#boton-aceptar-eliminar").click(function(){
+	if(lista.length==0){
+		alert("Debe Seleccionar al menos Un Elemento")
+	}else{
+			$(".carga-loading").removeAttr("hidden");
+			
+			for(var i=0;i<lista.length;i++){
+				$.ajax({
+				type : "POST",
+				url :"eliminar_producto.html",
+				data : {"codproducto":lista[i]},
+				});
+				
+			}
+			$("#modalEliminar").modal("hide");
+			 setTimeout(function (){
+			$("#contenido").load(ultimolink);},500);
+			
+	}
+		
+});
+</script>
+

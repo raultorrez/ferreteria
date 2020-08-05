@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	
+	<!-- start: Meta -->
+	<meta charset="utf-8">
+	<title>Ferreteria Juaresjkdsjdksajkdsjakdjsakjkl</title>
+	<link id="bootstrap-style" href="css/bootstrap.css" rel="stylesheet">
+	<link href="css/simple-sidebar.css" rel="stylesheet">
+	<link id="font-style" href="css/font-awesome.css" rel="stylesheet">
+	<link  href="css/bootstrap-datepicker.css" rel="stylesheet">
+	
+	
+	<style type="text/css">
+		body{
+			padding-top:50px; 
+		}
+		/*estilo de los botones del panel*/
+		.nav-pills >li>a{
+			background-color: #337ab7;
+			color: white;
+		}
+		.nav-pills >li>a:hover{
+			background-color: #1a4163;
+		}
+		.nav-pills >li>a:focus{
+			background-color: black;
+		}
+
+		/* estilo de la barra principal superior*/
+		.navbar-default .dropdown-menu > li :hover{
+			background-color:#337ab7;
+			color: white;
+		}
+		.navbar-default .navbar-nav >li:hover{
+			background-color:#337ab7;
+			color: white;
+		}
+		/*estilo para la tabla*/
+		table > thead{
+			background-color:#337ab7;
+			color: white;
+		}
+	 	.datatable > tbody> tr:hover{
+			background-color:#d4d8db;
+			transition:0.5s;
+			cursor: pointer;
+		}
+		/**estilo para losmodales*/
+		.modal .modal-header{
+			background-color:#337ab7;
+			color:white;
+			border-radius: 5px 5px 0px 0px;
+		}
+		.modal .modal-footer{
+			height: 40px;padding: 5px;
+		}
+		/**Estilo de las migas de Pan*/
+
+		.menu-panel{
+			padding: 5px;
+
+		}
+		.titulo{
+			text-transform:uppercase;
+			font-size: 25px;
+			text-align: center;
+			margin-left: 0px;
+		}
+
+		
+
+	</style>
+</head>
+
+<body>
+<div class="container">
+	<header>
+		<nav class="navbar navbar-default navbar-fixed-top navbar-inverse">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<button data-target="#menu-toggle" class="navbar-toggle" id="menu-toggle">
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+				</div>
+
+				<div class="collapse navbar-collapse" id="barradenavegacion">
+					<ul class="nav navbar-nav">
+						
+						<a href="#" class="navbar-brand titulo">FERRETERIA</a>
+						
+					</ul>
+
+
+					<ul class="nav navbar-nav navbar-right">
+						<li>
+							<li>
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">
+								Configuraci&oacute;n
+							</a>
+							<ul class="dropdown-menu">
+							<li>
+									<a id="cerrar-sesion"data-toggle="modal" data-target="#modalCerrarSesion"><i class="fa fa-sign-out"></i> Cerrar Sesion</a>
+								</li>
+							</ul>
+						</li>
+
+						</li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+	</header>
+	
+</div>
+<!--SideBar-->
+<div id="wrapper" class="toggled">
+<div id="sidebar-wrapper"> 
+			<div class="user-data">
+				<div class="user-name">
+					
+						<div style="font-size:30px;padding-top:20px;">Usuario</div>
+						#foreach($u in $nombre_usuario)
+						<div id="usuario" style="font-size:20px;">$u.nombres  $u.apellidos</div>
+						#end
+					
+				</div>
+				
+			</div>            
+            <ul class="sidebar-nav">
+                <li>
+                    <a href="nuevaVenta.html" class="boton-menu">Ventas</a>
+                </li>
+                <li>
+                    <a href="compras.html" class="boton-menu">Compras</a>
+                </li>
+				<li>
+                	<a href="gastos.html"class="boton-menu">Gastos</a>
+                </li>
+                
+            </ul>
+        </div>
+<!--fin sidebar-->
+
+<aside class="col-md-12" style="padding-top:20px;">
+
+<div id="contenido"></div>
+</aside>
+
+</div>
+
+<div class="modal fade" id="modalCerrarSesion">
+	<form action="agregarUsuario.html" method="post" id="formu">
+		<div class="modal-dialog">
+			<div class="modal-content">
+			<!-- Cabecera del Modal-->
+				<div class="modal-header"  style="text-align:center;">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title">Confirmar Cerrar Sesion</h4>	
+				</div>
+				<!-- contenido del modal-->
+				<div class="modal-body">
+				<center><h3>Est&aacute; seguro que desea cerrar Sesion??</h3></center>
+				</div>
+				<!--footer del modal-->
+				<div class="modal-footer">
+					<button class="btn btn-default btn-sm" data-dismiss="modal">Cancelar</button>
+					<button type="button" id="boton-aceptar-cerrar" class="btn btn-primary btn-sm ">Aceptar</button>
+				</div>
+				</div>
+		</div>
+	</form>
+</div>
+<div class="modal fade" id="modalCambiarPassword">
+			<div class="modal-dialog">
+				<div class="modal-content">
+				<!-- Cabecera del Modal-->
+					<div class="modal-header"  style="text-align:center;">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title">Cambiar Password</h4>	
+					</div>
+					<!-- contenido del modal-->
+					<div class="modal-body">
+							<div class="row">
+								<form action="" id="formulario-password">
+									<div class="col-xs-6">
+										<div class="form-group">
+											<label>Login</label>
+											<input type="Login" name="login-actual" id="login-actual" value="$loginUsuario" class="form-control">
+
+											<label>Password Actual</label>
+											<input type="password" name="pass-actual" id="pass-actual" class="form-control">
+											<p class="mensaje-password" style="color:red;"> </p>
+										</div>
+									</div>
+									<div class="col-xs-6">
+										<div class="form-group">
+											<br><br><br>
+											<label style="padding-top:1px;">Password Nuevo</label>
+											<input type="text" name="pass-nuevo" id="pass-nuevo" class="form-control">
+										</div>
+									</div>
+								</form>	
+							</div>
+					</div>
+					<!--footer del modal-->
+					<div class="modal-footer">
+						<button class="btn btn-default btn-sm" data-dismiss="modal">Cancelar</button>
+						<button type="button" id="boton-cambiar-password" class="btn btn-primary btn-sm ">Cambiar</button>
+					</div>
+					</div>
+			</div>
+	</div>
+
+	<div class="modal fade" id="modalCambiarCaja">
+			<div class="modal-dialog">
+				<div class="modal-content">
+				<!-- Cabecera del Modal-->
+					<div class="modal-header"  style="text-align:center;">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title">Cambiar Caja</h4>	
+					</div>
+					<!-- contenido del modal-->
+					<div class="modal-body">
+							<div class="row">
+								<form action="" id="formulario-caja">
+									<div class="col-xs-12">
+										<div>
+											<center><h1 id="superCaja"></h1></center>
+										</div>
+										<br>
+										<div class="col-xs-6">
+												<div class="form-group">
+													<label>Nueva valor de Caja</label>
+													<input type="Login" name="caja-actual" id="caja-actual" class="form-control">
+												</div>
+											</div>
+											<div class="col-xs-6">
+												<div class="form-group">
+													<label >Password</label>
+													<input type="password" name="pass-actual"  class="form-control" placeholder="Ingrese su Password para confirmar">
+													<p class="mensaje-password" style="color:red;"> </p>
+												</div>
+											</div>
+									</div>
+								</form>	
+							</div>
+					</div>
+					<!--footer del modal-->
+					<div class="modal-footer">
+						<button class="btn btn-default btn-sm" data-dismiss="modal">Cancelar</button>
+						<button type="button" id="boton-cambiar-caja" class="btn btn-primary btn-sm ">Cambiar</button>
+					</div>
+					</div>
+			</div>
+	</div>
+
+	<div class="modal fade" id="modalMensaje">
+			<div class="modal-dialog">
+				<div class="modal-content">
+				<!-- Cabecera del Modal-->
+					<div class="modal-header"  style="text-align:center;">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title">Acci&oacute;n Realizada</h4>	
+					</div>
+					<!-- contenido del modal-->
+					<div class="modal-body">
+						<div >
+							<center><h3 id="mensajito"></h3></center>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary btn-sm " id="cerrarOk" data-dismiss="modal">Aceptar</button>
+					</div>
+					</div>
+			</div>
+		</div>
+</body>
+<!--Scripts-->
+<script src="js/jquery-3.1.1.js"></script>
+<script src="js/bootstrap.js"></script>
+<script src="js/bootstrap-datepicker.js"></script>
+<script src="js/jquery.hotkeys.js"></script>
+
+<script type="text/javascript">
+
+var ultimolink="#";
+
+$(document).ready( function (){
+	$('.datatable').dataTable();
+});
+
+          
+$(".boton-menu").click(function(e){
+    e.preventDefault();
+    var link =$(this).attr("href");
+    $("#contenido").load(link);
+    ultimolink = link;
+});
+        
+/*oculta el mensaje de bienvenida*/
+setTimeout(function (){
+		$(".alert").fadeIn();
+	},500);
+
+setTimeout(function (){
+		$(".alert").fadeOut();
+	},4000);
+
+</script>
+
+ <script>
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+    });
+
+	$(document).bind('keydown', "Alt+b", function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+   });
+
+   $(document).bind('keydown', "f4", function(e) {
+        e.preventDefault();
+        $("#cerrar-sesion").click();
+   });
+
+   $(".sidebar-nav>li").click(function(){
+	   $(".sidebar-nav>li").removeClass("active");
+	   $(this).addClass("active");
+   });
+
+   $("#boton-aceptar-cerrar").click(function(){
+	   $("#contenido").load("bienvenida.html");
+	   window.location="index.html";
+   });
+
+   $("#contenido").load("bienvenida.html");
+
+   setInterval(llenarCaja,2000);
+
+   function llenarCaja(){
+   	$.ajax({
+			type : "POST",
+			url :"llenarCaja.html",
+			success : function(e){
+			
+			$("#valorCaja").text(trunc(e.substring(6),2));
+			$("#superCaja").text(e.substring(6))
+			}
+			});
+   }
+
+   $("#boton-cambiar-password").click(function(){
+	   var datos = $("#formulario-password").serialize();
+	   $.ajax({
+			type : "POST",
+			url :"comprobarpass.html",
+			data : datos,
+			success : function(e){
+				if(e==1){
+					$.ajax({
+						type : "POST",
+						url :"cambiarPass.html",
+						data : datos,
+						success : function(e){
+							$('#modalCambiarPassword').modal('hide');
+					
+							$("#password-nuevo").val("");
+							$("#password-antiguo").val("");
+							setTimeout(function (){
+								$("#mensajito").text("Datos Cambiados Satisfatoriamente");
+								$("#modalMensaje").modal('show');
+							},500);
+						}
+					});
+				}
+				else{
+					$("#mensaje-password").text("Password Incorrecto");
+					setTimeout(function (){
+						$("#mensaje-password").text(" ");
+					},3000);
+				}
+			}
+		});
+   });
+
+    $("#boton-cambiar-caja").click(function(){
+	   var datos = $("#formulario-caja").serialize();
+	   $.ajax({
+			type : "POST",
+			url :"comprobarpass.html",
+			data : datos,
+			success : function(e){
+				if(e==1){
+					$.ajax({
+						type : "POST",
+						url :"cambiarCaja.html",
+						data : datos,
+						success : function(e){
+							$('#modalCambiarCaja').modal('hide');
+							setTimeout(function (){
+								$("#mensajito").text("Caja Actualizada Satisfatoriamente");
+								$("#modalMensaje").modal('show');
+							},500);
+						}
+					});
+				}
+				else{
+					$(".mensaje-password").text("Password Incorrecto");
+					setTimeout(function (){
+						$("#mensaje-password").text(" ");
+					},3000);
+				}
+			}
+		});
+   });
+   
+   function trunc (x, posiciones){
+   	var s = x.toString();
+   	var l = s.length;
+   	var decimalL = s.indexOf('.')+1;
+   	
+   	var num = s.substr(0, decimalL + posiciones);
+   	return num;
+   }
+
+</script>
+
+</html>

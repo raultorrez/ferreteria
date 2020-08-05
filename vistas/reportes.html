@@ -1,0 +1,191 @@
+
+<head>
+	
+	<!-- start: Meta -->
+	<meta charset="utf-8">
+	<link id="dataTables-style" href="css/jquery.dataTables.css" rel="stylesheet">
+</head>
+<div class="col-md-12">
+<div class="alert alert-success hide" id="agregado">
+<button class="close" data-dismiss="alert">&times;</button>
+se Agrego el usuario correctamente
+</div>
+</div>
+<div class="col-md-12">
+<div class="col-md-12 titulo">
+<button class="btn btn-primary tip pull-left" data-toggle="modal" data-target="#modalNuevo" title="abrir con Alt+n" data-intro="boton Para Agregar un nuevo usuario" data-position="right">
+<i class="fa fa-file-text"></i> Nuevo Reporte
+</button>
+
+<span>Gestion Reportes</span>
+
+<button class="btn btn-warning tip pull-right" id="imprimir" title="Imprimir"  data-toggle="modal">
+Imprimir Reporte <i class="fa fa-print"></i>
+</button>
+<br><br>
+</div>
+
+
+<!--Modal Agregar nuevo Usuario-->
+</div>
+
+<div class="modal fade" id="modalEliminar">
+	<form action="agregarUsuario.html" method="post" id="formu">
+		<div class="modal-dialog">
+			<div class="modal-content">
+			<!-- Cabecera del Modal-->
+				<div class="modal-header"  style="text-align:center;">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title">Eliminar Reporte</h4>	
+				</div>
+				<!-- contenido del modal-->
+				<div class="modal-body" style="text-align: center;">
+				<p>esta seguro que desea Eliminar <span id="numero-eliminar"></span> Reportes(s)?</p>
+
+				<p class="carga-loading" style="font-size: 40px; color:#3072b3;" hidden>
+					<i class="fa fa-spinner fa-spin"></i>
+				</p>
+				</div>
+				<!--footer del modal-->
+				<div class="modal-footer">
+					<button class="btn btn-default btn-sm" data-dismiss="modal" id="cancelar-borrar">Cancelar</button>
+					<button type="button" id="boton-aceptar-eliminar" class="btn btn-primary btn-sm ">Aceptar</button>
+				</div>
+				</div>
+		</div>
+	</form>
+</div>
+
+<div class="modal fade" id="modalNuevo">
+	<form action="agregarUsuario.html" method="post" id="formu">
+		<div class="modal-dialog">
+			<div class="modal-content">
+			<!-- Cabecera del Modal-->
+				<div class="modal-header"  style="text-align:center;">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title">Nuevo Reporte</h4>	
+				</div>
+				<!-- contenido del modal-->
+				<div class="modal-body well">
+				<div  class="row">
+				<div class="col-xs-6">
+
+					<div class="input-group col-md-12">
+						<label>Reporte de:</label>
+						<select class="form-control" id="tipo">
+							<option value="compra">Compras</option>
+							<option value="venta">Ventas</option>
+							<option value="gastos">Gastos</option>
+							<option value="productos">Productos</option>
+						</select>
+					</div>
+						<div class="input-group col-md-12">
+						<label>Fecha de Hoy</label>
+							<a class="btn form-control btn-success" href="compraReportesHoy.html" id="boton-hoy" data-dismiss="modal">HOY</a>
+						</div>
+
+					
+				</div>
+				<div class="col-xs-6">
+					<div id="invisible">
+						<label>Fecha Inicio</label>
+						<div class="input-group col-md-12">
+							<input type="text" name="fecha_ini" id="fecha_ini" class="form-control datepicker" style="cursor:pointer;"readonly>
+							<i class="form-control-feedback glyphicon glyphicon-calendar"></i>
+						</div>
+						<label>Fecha Fin</label>
+						<div class="input-group col-md-12">
+							<input type="text" name="fecha_fin" id="fecha_fin" class="form-control datepicker" style="cursor:pointer;"readonly>
+							<i class="form-control-feedback glyphicon glyphicon-calendar"></i>
+						</div>
+					</div>
+				</div>
+				</div>
+				</div>
+				<!--footer del modal-->
+				<div class="modal-footer">
+					<button class="btn btn-default btn-sm" data-dismiss="modal">Cancelar</button>
+					<a id="crear" href="compraReportes.html"class="btn btn-primary btn-sm" data-dismiss="modal">Crear</a>
+				</div>
+				</div>
+		</div>
+	</form>
+</div>
+
+<div id="contenidoReporte"></div>
+
+<script src="js/jquery.dataTables.js"></script>
+<script type="text/javascript">
+	$(document).ready( function (){
+	       $('.datatable').dataTable();
+	    });
+</script>
+<script type="text/javascript">
+	$(".datepicker").datepicker({
+		format: 'yyyy-mm-dd', //formato de la fecha
+		endDate:'5d', // deshabilita las fechas siguientes
+		autoclose: true, //en true se cierra automaticamente despues de selecionar la fecha
+		orientation:'bottom',
+		todayHighlight:true
+	});
+</script>
+
+<script>
+/*obtener los valores del checkbox y eliminar los seleccionados*/
+var lista =new Array();
+
+$("#boton-eliminar").click(function(){
+lista=[]; // vaciar la lista para evitar redundancias
+$("input[type=checkbox]:checked.seleccionado").each(function(){
+		lista.push($(this).val()); //asignar al array cada uno de los elementos selecionados
+});
+$("#numero-eliminar").text(lista.length);
+
+});
+
+$("#boton-aceptar-eliminar").click(function(){
+	if(lista.length==0){
+		alert("Debe Selecionar al menos Un Elemento")
+	}else{
+			$(".carga-loading").removeAttr("hidden");
+			for(var i=0;i<lista.length;i++){
+				setTimeout(function (){
+				$.ajax({
+				type : "POST",
+				url :"eliminarUsuario.html",
+				data : {"ci":lista[i]},
+				success:function(fat){
+					
+					$("#contenido").load(ultimolink);		
+				}
+				});
+				},500);
+			}
+			$("#cancelar-borrar").click(); //mejor resultado dentro del success
+	}
+		
+});
+
+$("#boton-hoy").click(function(e){
+	e.preventDefault();
+    var link =$(this).attr("href");
+    $("#contenidoReporte").load(link);
+});
+
+
+$("#tipo").on('change',function(){
+	var tipo = $(this).val();
+	var tipo2 = tipo+"ReportesHoy.html";
+	var tipo3 = tipo+"Reportes.html";
+	$("#boton-hoy").attr("href",tipo2);
+	$("#crear").attr("href",tipo3);
+});
+
+$("#crear").click(function(e){
+	e.preventDefault();
+    var link =$(this).attr("href")+"?fecha_ini="+$("#fecha_ini").val()+"&fecha_fin="+$("#fecha_fin").val();
+   
+    $("#contenidoReporte").load(link);
+});
+</script
+

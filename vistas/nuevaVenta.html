@@ -1,0 +1,390 @@
+
+<head>
+	<!-- start: Meta -->
+	<meta charset="utf-8">
+	<link id="dataTables-style" href="css/jquery.dataTables.css" rel="stylesheet">
+</head>
+<div class="col-md-12">
+<div class="alert alert-success hide" id="agregado">
+<button class="close" data-dismiss="alert">&times;</button>
+se Agrego la venta correctamente
+</div>
+</div>
+<div class="col-md-12">
+
+<div class="modal-body well">
+		<div class="col-md-12 titulo">
+		<a class="btn btn-primary pull-left boton-menu" title="abrir con Alt+n" href="ventas.html">
+			<i class="fa fa-file"></i> Listar Ventas
+		</a>
+		<span>Nueva Venta</span><br><br>
+		</div>	
+				<div  class="row">
+					<div  class="row">
+						<div class="col-xs-4">
+						<div class="form-group">
+						<form action="" id="formudatos">
+							<label>Nombre del Cliente</label>
+							<input type="text" name="cliente" class="form-control" id="cliente" autofocus required>
+							<input type="hidden" name="tottal2" class="form-control" id="tottal2">
+
+							<label >Seleccione Tipo de Pago</label>
+								<select name="pago" id="pago" class="form-control">
+								 <option value="1">Al Contado</option>
+								 <option value="0">Al Credito</option>
+		                        </select> 
+
+						</form>
+						</div>
+						</div>
+
+						<div class="col-xs-8">
+				
+					<div class="form-group">
+					
+						<div class="row-xs-6">
+							<div class="col-xs-7">
+								<label>Producto</label>
+								<div class="input-group">
+									<input type="text" name="producto" class="form-control"  id="producto" list="productos1" placeholder="seleccione el Producto">
+									<span class="input-group-btn">
+										<button class="btn btn-success" id="borrarform">borrar</button>
+									</span>
+								</div>
+								<datalist id="productos1">
+										#foreach($p in $xlista)
+											<option data-ejemplo="${p.idproducto}" value="$p.nombre"></option>
+										#end
+								</datalist>
+							</div>
+							<div class="col-xs-5">
+								<label>Codigo</label>
+									<input type="number" name="codpro" class="form-control"  min="1" id="codpro" readonly>
+							</div>
+						</div>
+
+						<div class="col-xs-5">
+							<label>Cantidad</label>
+							<div class="input-group">
+								<input type="number" name="cantidad" class="form-control decimales" value="1" min="0.5" step="0.5" id="cantidad" >
+								<span class="input-group-addon">Unidad(es)</span>
+							</div>
+							<p id="mensaje-cantidad" style="color:red;"> </p>
+						</div>
+						<div class="col-xs-5">
+							<label>Precio</label>
+							<div class="input-group">
+								<input type="number" name="precio" class="form-control decimales"  id="precio" step="0.5">
+								<span class="input-group-addon">Bs.</span>
+							</div>
+						</div>
+						<div class="col-xs-2">
+							<br>
+							<button class="btn btn-primary" id="agregartab" style="margin-top:5px;">Agregar</button>
+						</div>
+						
+						
+					</div>
+				
+				</div>
+					
+					</div>
+		
+				
+				
+				
+				</div>
+
+	</div>
+	<div class="row">
+		<div class="col-xs-12">
+			<table class="table" data-intro="Lista de Usuarios registrados" data-position="bottom">
+				<thead>
+				<tr>
+					<th>Producto</th>
+					<th>Cantidad</th>
+					<th>Precio</th>
+					<th>Total</th>
+				</tr>
+				</thead>
+					<tbody id="cuerpo-tabla">
+					</tbody>
+			</table>
+			<hr style="border-style:solid none; border-width: 1px 0;">
+			<div style="float:left">
+					<a class="btn btn-default btn-lg" type="reset">Cancelar</a>
+			</div>
+
+			<div style="float:left; margin-left: 400px;">
+				<button class="btn btn-primary btn-lg" id="guardardetalle">Realizar Venta</button>
+			</div>
+			<div style="float: right;">
+				<span><b>Total</b></span> <input type="text" id="tottal" name="tottal" style="width: 108px;"><br><br>
+			</div>
+		</div>
+	</div>
+<div>
+
+</div>
+
+<div class="modal fade" id="modalImprimir">
+		<div class="modal-dialog">
+			<div class="modal-content">
+			<!-- Cabecera del Modal-->
+				<div class="modal-header"  style="text-align:center;">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title">Imprimir Proforma</h4>	
+				</div>
+				<!-- contenido del modal-->
+				<div class="modal-body">
+					<div id="imprimible">
+						<center><h2>Proforma</h2></center>
+						<p> <b>cliente:</b> <span id="nombre-cliente"> </span></p>
+		
+						<table  width="100%" >
+							<tr style="text-align:center;">
+								<td style="width:45%; border:solid 1px black;">producto</td>
+								<td style="border:solid 1px black;">cantidad</td>
+								<td style="border:solid 1px black;">precio</td>
+								<td style="border:solid 1px black;">importe</td>	
+							</tr>
+							
+							<tr id="cuerpo">
+		
+							</tr>
+						</table>
+						<hr style="border-style:solid none; border-width: .5px 0;">
+						<div style="text-align:right">
+							<p> <b>Total:</b> <span id="total-imp"> </span></p>
+						</div>
+					</div>
+				</div>
+				<!--footer del modal-->
+				<div class="modal-footer">
+					<button class="btn btn-default btn-sm" data-dismiss="modal" id="cerrarNo">No</button>
+					<button type="button" id="imprimir" class="btn btn-primary btn-sm " data-dismiss="modal">Imprimir</button>
+				</div>
+				</div>
+		</div>
+</div>
+<div class="modal fade" id="modalMensaje">
+	<div class="modal-dialog">
+		<div class="modal-content">
+		<!-- Cabecera del Modal-->
+			<div class="modal-header"  style="text-align:center;">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title">Acci&oacute;n Realizada</h4>	
+			</div>
+			<!-- contenido del modal-->
+			<div class="modal-body">
+				<div >
+					<center><h3 id="mensajito"></h3></center>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary btn-sm " id="cerrarOk" data-dismiss="modal">Aceptar</button>
+			</div>
+			</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+
+	$("#boton-prod").click(function(){
+		var codpro = $("#codpro").val();
+		$.ajax({
+		type : "POST",
+		url :"obtenerProducto.html",
+		data : {"codpro":codpro},
+		success:function(fat){
+			if(fat!="[]"){
+				var lista = fat.split(",");
+					$("#producto").val(lista[1].substring(lista[1].indexOf("=")+1));
+					$("#precio").val(lista[2].substring(lista[2].indexOf("=")+1));
+					$("#precio").attr("min",lista[2].substring(lista[2].indexOf("=")+1));
+
+			}else{
+				$('#mensajito').text("Elemento no existe");
+				$('#modalMensaje').modal('show');
+				$("#cerrarOk").attr('disabled',true);
+					setTimeout(function (){
+						$('#modalMensaje').modal('hide');
+						$("#cerrarOk").attr('disabled',false);
+					},1500);
+
+			}
+		}
+		});
+	});
+
+var i = 0;
+var total =0;
+var prods =new Array();
+var cants =new Array();
+var precios =new Array();
+prods = [];
+cants = [];
+precios =[];
+$("#agregartab").click(function(){
+	var codpro = $("#codpro").val();
+	var cant1 = $("#cantidad").val();
+	if(codpro!=""){
+			$.ajax({
+				type : "POST",
+				url :"verificarCantidad.html",
+				data : {"codpro":codpro},
+				success : function(e){
+					if(parseFloat(e)<cant1){
+
+						$("#mensaje-cantidad").text("no hay suficientes Productos para la Venta");
+						setTimeout(function (){
+							$("#mensaje-cantidad").text("");
+						},3000);	
+					}
+					else{	
+						if($("#producto").val()!="" && $("#precio").val()!=""){
+							var producto = $("#producto").val();
+							var precio =$("#precio").val();
+							var cantidad = $("#cantidad").val();
+							total=parseFloat(total)+parseFloat(precio*cantidad);
+							
+							prods[i]=$("#codpro").val();;
+							cants[i]=cantidad;
+							precios[i]=precio;
+							$("#cuerpo-tabla").append("<tr><td>"+producto+"</td>"+
+							"<td>"+cantidad+"</td> <td>"+precio+"</td><td>"+(precio*cantidad)+"</td></tr>");
+							$("#total-imp").text(total);
+
+							$("#cuerpo").append('<tr><td style="text-align:center;">'+producto+'</td>'+
+							'<td style="text-align:right;">'+cantidad+'</td> <td style="text-align:right;">'+precio+'</td><td style="text-align:right;">'+trunc((precio*cantidad),2)+'</td></tr>');
+							$("#tottal").val(total);
+							$("#tottal2").val(total);
+							$("#producto").val("");
+							$("#precio").val("");
+							$("#codpro").val("");
+
+							i++;
+						}
+					}
+				}
+	});
+	}
+	else{
+		$("#mensaje-cantidad").text("Debe llenar todos los Datos");
+						setTimeout(function (){
+							$("#mensaje-cantidad").text("");
+						},3000);
+	}
+});
+
+$("#guardardetalle").click(function(){
+	if(prods.length==0){
+		alert("Debe Seleccionar al menos Un Elemento")
+	}else{
+		
+			var datos = $("#formudatos").serialize();
+			$.ajax({
+				type : "POST",
+				url :"agregarVenta.html",
+				data : datos,
+				success : function(e){
+					$('#modalImprimir').modal('show');
+				}
+				});
+			
+			setTimeout(function (){	
+				for(var j=0;j<prods.length;j++){
+				$.ajax({
+				type : "POST",
+				url :"agregarDetalle.html",
+				data : {"producto":prods[j],"cantidad":cants[j],"precio":precios[j]},
+				});
+			}},500);		
+			
+	}
+});
+$("#cliente").on('change',function(){
+	var nombre = $(this).val();
+	$("#nombre-cliente").text(nombre);
+});
+
+function imprimirElemento(elemento){
+	var ventana = window.open('','PRINT', 'height=400,width=400');
+	ventana.document.write('<html><head><title>' + 'Ferreteria' + '</title>');
+	ventana.document.write('</head><body>');
+	ventana.document.write(elemento.innerHTML);
+	ventana.document.write('</body></html>');
+	ventana.document.close();
+	ventana.focus();
+	ventana.print();
+	ventana.close();
+	return true;
+}
+
+$("#imprimir").click(function(){
+	var div = document.querySelector("#imprimible");
+	imprimirElemento(div);
+		$('#mensajito').text("Venta Realizada con exito");
+		$('#modalMensaje').modal('show');
+	
+});
+
+$("#cerrarNo").click(function(){
+	$('#mensajito').text("Venta Realizada con exito");
+	$('#modalMensaje').modal('show');
+});
+
+$("#cerrarOk").click(function(){
+	setTimeout(function (){
+		$("#contenido").load(ultimolink);
+	},300);
+});
+
+$("#cliente").on('keyup',function(){
+	$(this).val($(this).val().toUpperCase());
+});
+
+$(".boton-menu").click(function(e){
+    e.preventDefault();
+    var link =$(this).attr("href");
+    $("#contenido").load(link);
+    ultimolink = link;
+});
+
+$("#producto").on('change',function(){
+	var valor = $("#producto").val();
+	var codpro = $("#productos1").find('option[value="'+valor+'"]').data('ejemplo');
+	
+		$.ajax({
+		type : "POST",
+		url :"obtenerProducto.html",
+		data : {"codpro":codpro},
+		success:function(fat){
+			if(fat!="[]"){
+				var lista = fat.split(",");
+					$("#codpro").val(codpro);
+					$("#precio").val(lista[2].substring(lista[2].indexOf("=")+1));
+					$("#precio").attr("min",lista[2].substring(lista[2].indexOf("=")+1));
+
+			}else{
+				$('#mensajito').text("Elemento no existe");
+				$('#modalMensaje').modal('show');
+				$("#cerrarOk").attr('disabled',true);
+					setTimeout(function (){
+						$('#modalMensaje').modal('hide');
+						$("#cerrarOk").attr('disabled',false);
+					},1500);
+
+			}
+		}
+		});
+});
+
+$("#borrarform").click(function(){
+	$("#producto").val("");
+	$("#codpro").val("");
+	$("#precio").val("");
+});
+
+
+</script>

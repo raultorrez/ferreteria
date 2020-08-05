@@ -1,0 +1,383 @@
+
+<head>
+	<!-- start: Meta -->
+	<meta charset="utf-8">
+	<link id="dataTables-style" href="css/jquery.dataTables.css" rel="stylesheet">
+</head>
+<div class="col-md-12">
+<div class="alert alert-success hide" id="agregado">
+<button class="close" data-dismiss="alert">&times;</button>
+se Agrego Nuevo Producto correctamente
+</div>
+</div>
+<div class="col-md-12">
+<div class="col-md-12 titulo">
+<button class="btn btn-primary tip pull-left" data-toggle="modal" data-target="#modalNuevo" data-position="right">
+<i class="fa fa-film"></i> Agregar Producto
+</button>
+<button data-toggle="modal" data-target="#modalModificar" id="abrir-modificar" hidden></button>
+
+<span>Gestion Productos</span>
+
+
+<br><br>
+</div>
+
+<table class="table datatable" data-intro="Lista de Usuarios registrados" data-position="bottom">
+	<thead>
+	<tr>
+	<th>Cod.Producto</th>
+	<th>Nombre</th>
+	<th>Precio</th>
+	<th>Cantidad Tienda</th>
+	<th>Cantidad Casa</th>
+	</tr>
+	</thead>
+	<tbody>
+		#foreach($p in $xlista)
+		<tr ondblclick='modificar("${p.idproducto}","${p.nombre}","${p.punit}","${p.cantidadtienda}","${p.cantidadcasa}","${p.inventario1}");'>
+			<td>${p.idproducto}</td>
+			<td>${p.nombre} </td>
+			<td>${p.punit} </td>
+			<td>${p.cantidadtienda} <button class="btn btn-success tip pull-left" data-toggle="modal" data-target="#modalTransferir" data-position="right" onclick="Transferir('${p.idproducto}','${p.cantidadtienda}','${p.punit}','${p.inventario1}');"> Transferir a Casa</button> </td>
+			<td>${p.cantidadcasa} <button class="btn btn-success tip pull-left" data-toggle="modal" data-target="#modalTransferir2" data-position="right" onclick="Transferir2('${p.idproducto}','${p.cantidadcasa}','${p.punit}','${p.inventario1}');"> Transferir a Tienda</button> </td>
+
+		</tr>
+		#end
+	</tbody>
+</table>
+<!--Modal Agregar nuevo Usuario-->
+</div>
+<div class="modal fade" id="modalNuevo">
+	<form action="agregar_producto.html" method="post" id="formu">
+		<div class="modal-dialog">
+			<div class="modal-content">
+			<!-- Cabecera del Modal-->
+				<div class="modal-header"  style="text-align:center;">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title">Agregar Producto</h4>	
+				</div>
+				<!-- contenido del modal-->
+				<div class="modal-body well">
+				<div  class="row">
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label>Cod. Producto  <span class="mensaje-producto" style="color:red;"></span></label>
+						<input type="number" name="codproducto" id="codproducto"class="form-control">
+						<p> </p>
+						<label>Precio Unit.</label>
+						<input type="number" name="punit" id="punit" class="form-control">
+					</div>
+				</div>
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label>Nombre</label>
+						<input type="text" name="nombre" id="nombre" class="form-control">
+						<p></p>
+						<label>Cantidad</label>
+						<input type="number" name="cantidad" id="cantidad"class="form-control">
+						<p></p>
+					</div>
+				</div>
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label>Inventario</label>
+						<select class="form-control" name="inventario">
+							<option value="Tienda">Tienda</option>
+							<option value="Casa">Casa</option>
+						</select>
+					</div>
+				</div>
+				</div>
+				</div>
+				<div>
+					<center><p class="mensaje-datos" style="color:red;"></p></center>	
+				</div>
+				<!--footer del modal-->
+				<div class="modal-footer">
+					<button class="btn btn-default btn-sm" data-dismiss="modal">Cerrar</button>
+					<button type="button" id="agregar_nuevo" class="btn btn-primary btn-sm ">Guardar</button>
+				</div>
+				</div>
+		</div>
+	</form>
+</div>
+
+<div class="modal fade" id="modalModificar">
+	<form action="modificar_producto.html" method="post" id="formu_modificar">
+		<div class="modal-dialog">
+			<div class="modal-content">
+			<!-- Cabecera del Modal-->
+				<div class="modal-header"  style="text-align:center;">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title">Modificar Producto</h4>	
+				</div>
+				<!-- contenido del modal-->
+				<div class="modal-body well">
+				<div  class="row">
+				<div class="col-xs-6">
+					<div class="form-group">
+						<input type="hidden" name="idproducto" id="idproducto1">
+						<label>Nombre</label>
+						<input type="text" name="nombre" id="nombre1" class="form-control">
+						<label>Precio Unit.</label>
+						<input type="number" name="punit" id="punit1" class="form-control">
+					</div>
+				</div>
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label>CantidadTienda</label>
+						<input type="number" name="cantidadtienda" id="cantidadtienda1" class="form-control">
+						<label>CantidadCasa</label>
+						<input type="number" name="cantidadcasa" id="cantidadcasa1" class="form-control">
+					</div>
+				</div>
+				</div>
+				</div>
+				<!--footer del modal-->
+				<div class="modal-footer">
+					<button class="btn btn-default btn-sm" data-dismiss="modal">Cerrar</button>
+					<button type="button" id="modificar" class="btn btn-primary btn-sm ">Guardar</button>
+				</div>
+				</div>
+		</div>
+	</form>
+</div>
+<div class="modal fade" id="modalTransferir">
+	<form action="transferir_producto.html" method="post" id="formu_transferir">
+		<div class="modal-dialog">
+			<div class="modal-content">
+			<!-- Cabecera del Modal-->
+				<div class="modal-header"  style="text-align:center;">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title">Transferir Producto a Casa</h4>	
+				</div>
+				<!-- contenido del modal-->
+				<div class="modal-body well">
+				<div  class="row">
+				<div class="col-xs-6">
+					<div class="form-group">
+						<input type="hidden" name="idproducto6" id="idproducto6">
+							<input type="hidden" name="punit6" id="punit6">
+							<input type="hidden" name="inventario6" id="inventario6">
+						<label>Cantidad Actual</label>
+						<input type="text" name="cantidad6" id="cantidad6" class="form-control" readonly>
+					</div>
+				</div>
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label>Cantidad a Transferir</label>
+						<input type="number" name="cantidad5" id="cantidad5" class="form-control">
+						<p id="mensaje-cantidad" style="color:red;"> </p>
+					</div>
+				</div>
+				</div>
+				</div>
+				<!--footer del modal-->
+				<div class="modal-footer">
+					<button class="btn btn-default btn-sm" data-dismiss="modal">Cerrar</button>
+					<button type="button" id="transferir" class="btn btn-primary btn-sm ">Aceptar</button>
+				</div>
+				</div>
+		</div>
+	</form>
+</div>
+<div class="modal fade" id="modalTransferir2">
+	<form action="transferir_producto2.html" method="post" id="formu_transferir2">
+		<div class="modal-dialog">
+			<div class="modal-content">
+			<!-- Cabecera del Modal-->
+				<div class="modal-header"  style="text-align:center;">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title">Transferir Producto a Tienda</h4>	
+				</div>
+				<!-- contenido del modal-->
+				<div class="modal-body well">
+				<div  class="row">
+				<div class="col-xs-6">
+					<div class="form-group">
+						<input type="hidden" name="idproducto9" id="idproducto9">
+							<input type="hidden" name="punit9" id="punit9">
+							<input type="hidden" name="inventario9" id="inventario9">
+						<label>Cantidad Actual</label>
+						<input type="text" name="cantidad9" id="cantidad9" class="form-control" readonly>
+					</div>
+				</div>
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label>Cantidad a Transferir</label>
+						<input type="number" name="cantidad8" id="cantidad8" class="form-control">
+						<p id="mensaje-cantidad" style="color:red;"> </p>
+					</div>
+				</div>
+				</div>
+				</div>
+				<!--footer del modal-->
+				<div class="modal-footer">
+					<button class="btn btn-default btn-sm" data-dismiss="modal">Cerrar</button>
+					<button type="button" id="transferir2" class="btn btn-primary btn-sm ">Aceptar</button>
+				</div>
+				</div>
+		</div>
+	</form>
+</div>
+<script src="js/jquery.dataTables.js"></script>
+<script type="text/javascript">
+	$(document).ready( function (){
+	       $('.datatable').dataTable();
+	    });
+</script>
+	<script type="text/javascript">
+	$(".datepicker").datepicker({
+		format: "dd-mm-yyyy", //formato de la fecha
+		endDate:'5d', // deshabilita las fechas siguientes
+//		daysOfWeekDisabled:'0,6', //desabilitar dias de fecha
+		autoclose: true, //en true se cierra automaticamente despues de selecionar la fecha
+		clearBtn: true, //para motrar el boton de limpiar
+		daysOfWeekHighlighted: '0,6', //resalta los dias que se señale
+		orientation:'bottom',
+		todayBtn:false,
+		todayHighlight:true,
+
+	});
+</script>
+<script type="text/javascript">
+/* Para abrir kla modal on la combinacion de teclas*/
+$(document).bind('keydown', "Alt+n", function assets() {
+   $("#modalNuevo").modal("show");
+   });
+
+/*Envia datos del formulario de forma asincrona*/
+</script>
+<script>
+ function modificar(idproducto,nombre,punit,cantidadtienda,cantidadcasa,inventario){
+	 $("#nombre1").val(nombre);
+	 $("#idproducto1").val(idproducto);
+	 $("#punit1").val(punit);
+	 $("#cantidadtienda1").val(cantidadtienda);
+	 $("#cantidadcasa1").val(cantidadcasa);
+	 $("#inventario1").val(inventario);
+	 $("#abrir-modificar").click();
+ }
+
+  function Transferir(idproducto,cantidadtienda,punit,inventario){
+	 $("#idproducto6").val(idproducto);
+	  $("#punit6").val(punit);
+	 $("#cantidad6").val(cantidadtienda);
+	 $("#inventario6").val(inventario);
+	 $("#abrir-transferir").click();
+ }
+   function Transferir2(idproducto,cantidadcasa,punit,inventario){
+	 $("#idproducto9").val(idproducto);
+	  $("#punit9").val(punit);
+	 $("#cantidad9").val(cantidadcasa);
+	 $("#inventario9").val(inventario);
+	 $("#abrir-transferir2").click();
+ }
+</script>
+
+<script>
+
+//agregar nuevo Producto
+$("#agregar_nuevo").click(function(){
+	var datos = $("#formu").serialize();
+
+if($("#codproducto").val()!=""&&$("#nombre").val()!=""&&$("#cantidad").val()!=""&& $("#punit").val()!=""){
+	$.ajax({
+		type : "POST",
+		url :"verificarProducto.html",
+		data : datos,
+		success:function(e){
+			if(e!=1){
+				$.ajax({
+					type : "POST",
+					url :"agregar_producto.html",
+					data : datos,
+					success:function(){
+						$("#modalNuevo").modal("hide");
+						$("#agregado").removeClass('hide');
+						$("#agregado").text("Se agrego el Nuevo Producto");
+						setTimeout(function (){
+						$("#contenido").load(ultimolink);
+						},2000);
+
+					}
+				});
+			}
+
+			else{
+				$(".mensaje-producto").text("Codigo ya registrado");
+					setTimeout(function (){
+						$(".mensaje-producto").text(" ");
+					},3000);
+			}
+
+	}});
+}
+else{
+	$(".mensaje-datos").text("Debe Rellenar Todos los Datos");
+		setTimeout(function (){
+			$(".mensaje-datos").text(" ");
+		},3000);
+}
+});
+
+$("#modificar").click(function(){
+	var datos = $("#formu_modificar").serialize();
+	$.ajax({
+		type : "POST",
+		url :"modificar_producto.html",
+		data : datos,
+		success:function(){
+			$("#modalModificar").modal("hide");
+			$("#agregado").removeClass('hide');
+			$("#agregado").text("Se Modifico Correctamente el Producto");
+			setTimeout(function (){
+			$("#contenido").load(ultimolink);
+			},2000);
+
+		}
+	});
+});
+
+$("#transferir").click(function(){
+	var datos = $("#formu_transferir").serialize();
+	alert(cantidad8+"    "+cantidad9);
+
+		$.ajax({
+		type : "POST",
+		url :"transferir_producto.html",
+		data : datos,
+		success:function(){
+			$("#modalTransferir").modal("hide");
+			$("#agregado").removeClass('hide');
+			$("#agregado").text("Se Transfirio Correctamente el Producto");
+			setTimeout(function (){
+			$("#contenido").load(ultimolink);
+			},2000);
+
+				}
+			});
+	
+});
+$("#transferir2").click(function(){
+	var datos = $("#formu_transferir2").serialize();
+	$.ajax({
+		type : "POST",
+		url :"transferir_producto2.html",
+		data : datos,
+		success:function(){
+			$("#modalTransferir2").modal("hide");
+			$("#agregado").removeClass('hide');
+			$("#agregado").text("Se Transfirio Correctamente el Producto");
+			setTimeout(function (){
+			$("#contenido").load(ultimolink);
+			},2000);
+
+		}
+	});
+});
+$("input[name=nombre]").on('keyup',function(){
+	$(this).val($(this).val().toUpperCase());
+});
+</script>

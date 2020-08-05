@@ -1,0 +1,344 @@
+
+<head>
+	
+	<!-- start: Meta -->
+	<meta charset="utf-8">
+	<link id="dataTables-style" href="css/jquery.dataTables.css" rel="stylesheet">
+</head>
+<div class="col-md-12">
+<div class="alert alert-success hide" id="agregado">
+<button class="close" data-dismiss="alert">&times;</button>
+se Agrego el usuario correctamente
+</div>
+</div>
+<div class="col-md-12">
+<div class="col-md-12 titulo">
+<button class="btn btn-primary tip pull-left" data-toggle="modal" data-target="#modalNuevo" title="abrir con Alt+n" data-intro="boton Para Agregar un nuevo usuario" data-position="right">
+<i class="fa fa-user"></i> Nuevo Usuario
+</button>
+<button data-toggle="modal" data-target="#modalModificar" id="abrir-modificar" hidden></button>
+
+<span>Usuarios</span>
+
+<br><br>
+</div>
+
+<table class="table datatable" data-intro="Lista de Usuarios registrados" data-position="bottom">
+	<thead>
+	<tr>
+	<th>Usuario</th>
+	<th>password</th>
+	<th>Estado</th>
+	<th></th>
+	</tr>
+	</thead>
+	<tbody>
+
+		#foreach($u in $xlista)
+		#if(${u.id}!=1)
+		<tr ondblclick="modificar('${u.id}','${u.nombres}','${u.apellidos}');">
+			<td>${u.nombres} ${u.apellidos}</td>
+			<td><a href="#" data-toggle="modal" class="btn btn-default"data-target="#modalPassword" onclick="modificarpass('${u.id}','${u.nombres}','${u.apellidos}','${u.login}')"><i class="fa fa-key"></i></a></td>
+			<td>
+			#if (${u.estado}==1)
+                <i class="fa fa-thumbs-o-up" style="color:#337ab7;"></i>       
+				#else
+				<i class="fa fa-thumbs-o-down" style="color:red;"></i> 
+				#end
+			</td>
+			<td>
+				#if (${u.estado}==1)
+					 <a class="btn btn-danger" onclick="deshabilitar('${u.id}');" id="boton-habilitar">Dar Baja</a>     
+					#else
+					 <a class="btn btn-success" onclick="habilitar('${u.id}');" id="boton-habilitar">Habilitar</a> 
+					#end
+				</td>
+		</tr>
+		#end
+		#end
+	</tbody>
+</table>
+<!--Modal Agregar nuevo Usuario-->
+</div>
+<div class="modal fade" id="modalNuevo">
+	<form action="agregar_usuario.html" method="post" id="formu">
+		<div class="modal-dialog">
+			<div class="modal-content">
+			<!-- Cabecera del Modal-->
+				<div class="modal-header"  style="text-align:center;">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title">Agregar Nuevo Usuario</h4>	
+				</div>
+				<!-- contenido del modal-->
+				<div class="modal-body well">
+				<div  class="row">
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label>Nombre</label>
+						<input type="text" name="nombre" class="form-control">
+						<label>Apellidos</label>
+						<input type="text" name="apellidos" class="form-control">
+						
+					</div>
+				</div>
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label>Login</label>
+						<input type="text" name="login" class="form-control">
+						<label>Password</label>
+						<input type="password" name="pass" class="form-control">
+					</div>
+				</div>
+				</div>
+				</div>
+				<!--footer del modal-->
+				<div class="modal-footer">
+					<button class="btn btn-default btn-sm" data-dismiss="modal">Cerrar</button>
+					<button type="button" id="enviar" class="btn btn-primary btn-sm ">Guardar</button>
+				</div>
+				</div>
+		</div>
+	</form>
+</div>
+
+<div class="modal fade" id="modalModificar">
+	<form action="modificar_usuario.html" method="post" id="formu-modificar">
+		<div class="modal-dialog">
+			<div class="modal-content">
+			<!-- Cabecera del Modal-->
+				<div class="modal-header"  style="text-align:center;">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title">Modificar Usuario</h4>	
+				</div>
+				<!-- contenido del modal-->
+				<div class="modal-body well">
+				<div  class="row">
+				<div class="col-xs-6">
+					<div class="form-group">
+						<input type="hidden" name="ci" id="ci" class="form-control">
+						<label>Nombre</label>
+						<input type="text" name="nombre" id="nombre" class="form-control">
+					</div>
+				</div>
+					<div class="col-xs-6">
+						<div class="form-group">
+							<label>Apellidos</label>
+							<input type="text" name="apellidos" id="apellidos" class="form-control">
+						</div>
+					</div>
+				</div>
+				</div>
+				<!--footer del modal-->
+				<div class="modal-footer">
+					<button class="btn btn-default btn-sm" data-dismiss="modal">Cerrar</button>
+					<button type="button" id="modificar" class="btn btn-primary btn-sm ">Modificar</button>
+				</div>
+				</div>
+		</div>
+	</form>
+</div>
+
+
+<div class="modal fade" id="modalPassword">
+	<form action="cambiar_pass.html" method="post" id="formupass">
+		<div class="modal-dialog">
+			<div class="modal-content">
+			<!-- Cabecera del Modal-->
+				<div class="modal-header"  style="text-align:center;">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title">Cambiar Password</h4>
+				</div>
+				<!-- contenido del modal-->
+				<div class="modal-body well">	
+				<div  class="row">
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label>Usuario</label>
+						<input type="hidden" id="ci1" name="ci">
+						<input type="text" name="nombre" class="form-control" id="nombre1" disabled>
+						<label>Login</label>
+						<input type="text" name="login" class="form-control" id="login1">
+						
+					</div>
+				</div>
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label>Password</label>
+						<input type="password" name="pass" class="form-control">
+					</div>
+				</div>
+				</div>
+				</div>
+				<!--footer del modal-->
+				<div class="modal-footer">
+					<button class="btn btn-default btn-sm" data-dismiss="modal">Cerrar</button>
+					<button type="button" id="cambiarpass" class="btn btn-primary btn-sm ">Guardar</button>
+				</div>
+				</div>
+		</div>
+	</form>
+</div>
+<script src="js/jquery.dataTables.js"></script>
+<script type="text/javascript">
+	$(document).ready( function (){
+	       $('.datatable').dataTable();
+	    });
+</script>
+	<script type="text/javascript">
+	$(".datepicker").datepicker({
+		format: "dd-mm-yyyy", //formato de la fecha
+		endDate:'5d', // deshabilita las fechas siguientes
+//		daysOfWeekDisabled:'0,6', //desabilitar dias de fecha
+		autoclose: true, //en true se cierra automaticamente despues de selecionar la fecha
+		clearBtn: true, //para motrar el boton de limpiar
+		daysOfWeekHighlighted: '0,6', //resalta los dias que se señale
+		orientation:'bottom',
+		todayBtn:false,
+		todayHighlight:true,
+
+	});
+</script>
+<script type="text/javascript">
+/* Para abrir kla modal on la combinacion de teclas*/
+$(document).bind('keydown', "Alt+n", function assets() {
+   $("#modalNuevo").modal("show");
+   });
+
+$(document).bind('keydown', "Alt+x", function assets() {
+   $("#boton-eliminar").click();
+   });
+
+
+
+/*Envia datos del formulario de forma asincrona*/
+$("#enviar").click(function(){
+	var datos = $("#formu").serialize();
+	$.ajax({
+		type : "POST",
+		url :"agregar_usuario.html",
+		data : datos,
+		success:function(){
+			$("#modalNuevo").modal("hide");
+			$("#agregado").removeClass('hide');
+			$("#agregado").text("Se agrego el Nuevo Usuario");
+			setTimeout(function (){
+			$("#contenido").load(ultimolink);
+			},2000);
+
+		}
+	});
+});
+
+/*comprueba la existencia del ci en lka base de datos*/
+$("input[name=ci]").on('blur',function(){
+	$.ajax({
+		type : "POST",
+		url :"verificarCi.html",
+		data : {"ci":$(this).val()},
+		success:function(fat){
+			if(fat!="[]"){
+				
+				if(confirm("El usuario ya esta Registrado\n Desea Editar sus Datos?")){
+					var lista = fat.split(",");
+					$("input[name=nombre]").val(lista[1].substring(lista[1].indexOf("=")+1));
+					$("input[name=apellidos]").val(lista[2].substring(lista[2].indexOf("=")+1));
+					$("input[name=fecha_nac]").val(lista[3].substring(lista[3].indexOf("=")+1));
+				}
+				else{
+					$("input[name=ci]").val("");
+				}
+			}
+		}
+	});
+});
+</script>
+<script>
+
+
+function deshabilitar(cod){
+	$.ajax({
+	type : "POST",
+	url :"eliminarUsuario.html",
+	data : {"ci":cod},
+	success:function(){
+			$("#agregado").removeClass('hide');
+			$("#agregado").text("Se elimino el Usuario");
+			setTimeout(function (){
+			$("#contenido").load(ultimolink);
+			},1000);
+
+		}
+	});
+				
+			
+}
+
+function habilitar(cod){
+
+	$.ajax({
+		type : "POST",
+		url :"habilitarUsuario.html",
+		data : {"ci":cod},
+		success:function(){
+			$("#agregado").removeClass('hide');
+			$("#agregado").text("Se habilito el Usuario");
+			setTimeout(function (){
+			$("#contenido").load(ultimolink);
+			},1000);
+
+		}
+	});
+}
+</script>
+<script>
+ function modificar(ci,nombre,apellidos,rol){
+	 $("#ci").val(ci);
+	 $("#nombre").val(nombre);
+	 $("#apellidos").val(apellidos);
+	 $("#rol").val(rol);
+	 $("#abrir-modificar").click();
+ }
+
+ $("#modificar").click(function(){
+	var datos = $("#formu-modificar").serialize();
+	$.ajax({
+		type : "POST",
+		url :"modificar_usuario.html",
+		data : datos,
+		success:function(){
+			$("#modalModificar").modal("hide");
+			$("#agregado").removeClass('hide');
+			$("#agregado").text("Se Modifico Correctamente el Usuario");
+			setTimeout(function (){
+			$("#contenido").load(ultimolink);
+			},500);
+
+		}
+	});
+});
+
+function modificarpass(ci,nombre,apellidos,login){
+	$("#ci1").val(ci);
+	$("#nombre1").val(nombre+" "+apellidos);
+	$("#login1").val(login);
+}
+
+ $("#cambiarpass").click(function(){
+	var datos = $("#formupass").serialize();
+	$.ajax({
+		type : "POST",
+		url :"cambiarPass2.html",
+		data : datos,
+		success:function(){
+			$("#modalPassword").modal("hide");
+			$("#agregado").removeClass('hide');
+			$("#agregado").text("Se Modifico Correctamente el Password");
+			setTimeout(function (){
+			$("#contenido").load(ultimolink);
+			},500);
+
+		}
+	});
+});
+
+</script>

@@ -1,0 +1,79 @@
+
+<head>
+	
+	<!-- start: Meta -->
+	<meta charset="utf-8">
+	<link id="dataTables-style" href="css/jquery.dataTables.css" rel="stylesheet">
+</head>
+<div class="col-md-12 titulo">
+<span>detalle venta</span>
+<br><br>
+</div>
+<div class="col-md-6">
+#foreach($d in $datos)
+	<div class="modal-body well">
+				<div  class="row">
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label>Usuario:</label>
+						<p style="font-size:25px">$d.nombre_usu $d.ap_usu</p>
+						<label>Fecha:</label>
+						<p style="font-size:25px">$d.fechaventa</p>
+						
+					</div>
+				</div>
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label>Cliente:</label>
+						<p style="font-size:25px">$d.nombres</p>
+						
+						<label>Hora:</label>
+						<p style="font-size:25px">$d.horaventa</p>
+					</div>
+				</div>
+				</div>
+		</div>
+#end
+</div>
+<div class="col-md-12">
+
+	<table class="table datatable" data-intro="Lista de Usuarios registrados" data-position="bottom">
+	<thead>
+	<tr>
+	<th>#</th>
+	<th>Producto</th>
+	<th>Cantidad</th>
+	<th>Precio</th>
+	<th>total</th>
+
+	</tr>
+	</thead>
+	<tbody id="cuerpo-tabla">
+		#set ($u=0)
+		#set ($n=0)
+		#foreach($k in $nombres)
+		<tr>
+		#set($n=$n+1)
+			<td>$n</td>
+			<td>$k.nombre</td>
+			<td>$k.cantidad</td>
+			<td>$k.precio</td>	
+			<td>$k.total</td>
+			#set ($u=$u+${k.total})
+		</tr>
+		#end
+	</tbody>
+</table>
+
+<div>
+<div> <p style="font-size:26px; float:right"><b>TOTAL: $u</b></p></div>
+<center><a class="btn btn-primary btn-lg boton-menu" href="ventas.html" >Atras</a></center>
+</div>
+<script type="text/javascript">
+$(".boton-menu").click(function(e){
+    e.preventDefault();
+    var link =$(this).attr("href");
+    $("#contenido").load(link);
+    ultimolink = link;
+});
+</script>

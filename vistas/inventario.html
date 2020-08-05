@@ -1,0 +1,61 @@
+
+<head>
+	<!-- start: Meta -->
+	<meta charset="utf-8">
+	<link id="dataTables-style" href="css/jquery.dataTables.css" rel="stylesheet">
+</head>
+
+<div class="col-md-12">
+<div class="modal-body well">
+		<div class="col-md-12 titulo">
+		<span>Inventario Tienda</span><br><br>
+		</div>	
+				<center>
+					<a href="inventario.html" class="btn btn-primary boton-menu ">Tienda</a>
+					<a href="inventario2.html" class="btn btn-success boton-menu">Casa</a>
+				</center>
+					
+			
+	</div>
+<table class="table datatable" data-intro="Lista de Usuarios registrados" data-position="bottom">
+		<thead>
+			<tr>
+				<th>Codigo</th>
+                <th>Producto</th>
+				<th>Precio</th>
+				<th>Cantidad</th>
+				<th>Monto Total</th>
+			</tr>
+		</thead>
+		<tbody id="cuerpo-tabla">
+		#set ($x=0)
+		#foreach($p in $xlista)
+			<tr>
+				<td>${p.idproducto}</td>
+               	<td>${p.nombre} </td>
+				<td >${p.punit} </td>
+				<td>${p.cantidadtienda} </td>
+				<td>${p.montotienda} </td>
+			</tr>
+			#set ($x = $x+$p.montotienda)
+			#end
+		</tbody>
+	</table><br><br>
+	<div style="float:right"><b> TOTAL : $x Bs.</b></div>
+<!--Modal Agregar nuevo Usuario-->
+</div>
+
+<script src="js/jquery.dataTables.js"></script>
+<script type="text/javascript">
+	$(document).ready( function (){
+	       $('.datatable').dataTable();
+	    });
+
+	$(".boton-menu").click(function(e){
+    e.preventDefault();
+    var link =$(this).attr("href");
+    $("#contenido").load(link);
+    ultimolink = link;
+    });
+       
+</script>

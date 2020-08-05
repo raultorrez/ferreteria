@@ -1,0 +1,88 @@
+
+<head>
+	
+	<!-- start: Meta -->
+	<meta charset="utf-8">
+	<link id="dataTables-style" href="css/jquery.dataTables.css" rel="stylesheet">
+</head>
+<div class="col-md-12">
+<div class="alert alert-success hide" id="agregado">
+<button class="close" data-dismiss="alert">&times;</button>
+se Agrego el usuario correctamente
+</div>
+</div>
+<div class="col-md-12">
+<div class="col-md-12 titulo">
+<button class="btn btn-primary tip pull-left" id="llamar-nueva-venta" data-toggle="modal" data-target="#modalNuevo" title="abrir con Alt+n" data-intro="boton Para Agregar un nuevo usuario" data-position="right">
+<i class="fa fa-file-text-o"></i> Nueva Categoria
+</button>
+
+<span>Gestion Categorias</span>
+
+<button class="btn btn-danger tip pull-right" id="boton-eliminar" title="Eliminar"  data-toggle="modal" data-target="#modalEliminar" data-position="left">
+Eliminar Categoria <i class="fa fa-close"></i>
+</button>
+<br><br>
+</div>
+
+<table class="table datatable" data-intro="Lista de Usuarios registrados" data-position="bottom">
+	<thead>
+	<tr>
+	<th>Codigo Categoria</th>
+	<th>Nombre</th>
+	<th>Estado</th>
+	<th></th>
+	</tr>
+	</thead>
+	<tbody>
+		#foreach($liscat in $xlista)
+		<tr>
+			<td>${liscat.codcategoria} </td>
+            <td>${liscat.nombre} </td>
+			<td>#if (${liscat.estado}==1)
+                <i class="fa fa-thumbs-o-up" style="color:#337ab7;"></i>      
+				#else
+				<i class="fa fa-thumbs-o-down" style="color:red;"></i> 
+				#end
+             </td>
+			<td><input type="checkbox" name=""></td>
+		</tr>
+		#end
+	</tbody>
+</table>
+<!--Modal Agregar nuevo Usuario-->
+</div>
+
+<div class="modal fade" id="modalEliminar">
+	<form action="agregarUsuario.html" method="post" id="formu">
+		<div class="modal-dialog">
+			<div class="modal-content">
+			<!-- Cabecera del Modal-->
+				<div class="modal-header"  style="text-align:center;">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title">Eliminar Venta</h4>	
+				</div>
+				<!-- contenido del modal-->
+				<div class="modal-body">
+				esta seguro que desea Eliminar la venta 10326?
+				</div>
+				<!--footer del modal-->
+				<div class="modal-footer">
+					<button class="btn btn-default btn-sm" data-dismiss="modal">Cancelar</button>
+					<button type="button" id="enviar" class="btn btn-primary btn-sm ">Aceptar</button>
+				</div>
+				</div>
+		</div>
+	</form>
+</div>
+<script src="js/jquery.dataTables.js"></script>
+<script type="text/javascript">
+	$(document).ready( function (){
+	       $('.datatable').dataTable();
+	    });
+
+		$("#llamar-nueva-venta").click(function(){
+			$("#nueva-venta").click();
+		});
+</script>
+

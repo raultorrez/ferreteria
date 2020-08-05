@@ -1,0 +1,242 @@
+
+<head>
+	
+	<!-- start: Meta -->
+	<meta charset="utf-8">
+	<link id="dataTables-style" href="css/jquery.dataTables.css" rel="stylesheet">
+</head>
+<div class="col-md-12">
+<div class="alert alert-success hide" id="agregado">
+<button class="close" data-dismiss="alert">&times;</button>
+se Agrego el Proveedor correctamente
+</div>
+</div>
+<div class="col-md-12">
+<div class="col-md-12 titulo">
+<button class="btn btn-primary tip pull-left" data-toggle="modal" data-target="#modalNuevo" data-position="right">
+<i class="fa fa-film"></i> Agregar Proveedor
+</button>
+<button data-toggle="modal" data-target="#modalModificar" id="abrir-modificar" hidden></button>
+<span>Proveedores</span>
+
+<br><br>
+</div>
+
+<table class="table datatable" data-intro="Lista de Proveedores registrados" data-position="bottom">
+	<thead>
+	<tr>
+	<th>CI. o NIT</th>
+	<th>Nombres</th>
+	<th>Celular o Telefono</th>
+	</tr>
+	</thead>
+	<tbody>
+	#foreach($p in $xlista)
+			<tr ondblclick="modificar('${p.idproveedor}','${p.ciproveedor}','${p.nombres}','${p.celular}');">
+				<td>${p.ciproveedor}</td>
+				<td>${p.nombres}</td>
+				<td>${p.celular}</td>
+			</tr>
+	#end
+	</tbody>
+</table>
+<!--Modal Agregar nuevo Usuario-->
+</div>
+<div class="modal fade" id="modalNuevo">
+	<form action="agregar_proveedor.html" method="post" id="formu">
+		<div class="modal-dialog">
+			<div class="modal-content">
+			<!-- Cabecera del Modal-->
+				<div class="modal-header"  style="text-align:center;">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title">Agregar Nuevo Usuario</h4>	
+				</div>
+				<!-- contenido del modal-->
+				<div class="modal-body well">
+				<div  class="row">
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label>CI o NIT</label>
+						<input type="text" name="ciproveedor" id="ciproveedor"class="form-control">
+					</div>
+					<div class="form-group">
+						<label>Celular o Telefono</label>
+						<input type="text" name="celular" id="celular"class="form-control">
+					</div>
+				</div>
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label>Nombres</label>
+						<input type="text" name="nombres" id="nombres"class="form-control">
+					</div>
+				</div>
+				</div>
+				</div>
+				<div>
+					<center><p class="mensaje-proveedores" style="color:red;"></p></center>
+				</div>
+				<!--footer del modal-->
+				<div class="modal-footer">
+					<button class="btn btn-default btn-sm" data-dismiss="modal">Cerrar</button>
+					<button type="button" id="enviar" class="btn btn-primary btn-sm ">Guardar</button>
+				</div>
+				</div>
+		</div>
+	</form>
+</div>
+
+<div class="modal fade" id="modalModificar">
+	<form action="modificar_proveedor.html" method="post" id="formu-modificar">
+		<div class="modal-dialog">
+			<div class="modal-content">
+			<!-- Cabecera del Modal-->
+				<div class="modal-header"  style="text-align:center;">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title">Modificar Proveedor</h4>	
+				</div>
+				<!-- contenido del modal-->
+				<div class="modal-body well">
+				<div  class="row">
+				<div class="col-xs-6">
+					<div class="form-group">
+					<input type="hidden" name="id1" id="id1" class="form-control">
+						<label>CI o NIT</label>
+						<input type="text" name="ci1" id="ci1" class="form-control">
+					</div>
+					<div class="form-group">
+						<label>Celular o Telefono</label>
+						<input type="text" name="celular1" id="celular1" class="form-control">
+					</div>
+				</div>
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label>Nombres</label>
+						<input type="text" name="nombres1" id="nombres1" class="form-control">
+					</div>
+				</div>
+				</div>
+				</div>
+				<!--footer del modal-->
+				<div class="modal-footer">
+					<button class="btn btn-default btn-sm" data-dismiss="modal">Cerrar</button>
+					<button type="button" id="modificar" class="btn btn-primary btn-sm ">Modificar</button>
+				</div>
+				</div>
+		</div>
+	</form>
+</div>
+
+
+
+
+<script src="js/jquery.dataTables.js"></script>
+<script type="text/javascript">
+	$(document).ready( function (){
+	       $('.datatable').dataTable();
+	    });
+</script>
+	<script type="text/javascript">
+	$(".datepicker").datepicker({
+		format: "dd-mm-yyyy", //formato de la fecha
+		endDate:'5d', // deshabilita las fechas siguientes
+//		daysOfWeekDisabled:'0,6', //desabilitar dias de fecha
+		autoclose: true, //en true se cierra automaticamente despues de selecionar la fecha
+		clearBtn: true, //para motrar el boton de limpiar
+		daysOfWeekHighlighted: '0,6', //resalta los dias que se señale
+		orientation:'bottom',
+		todayBtn:false,
+		todayHighlight:true,
+
+	});
+</script>
+<script type="text/javascript">
+/* Para abrir kla modal on la combinacion de teclas*/
+$(document).bind('keydown', "Alt+n", function assets() {
+   $("#modalNuevo").modal("show");
+   });
+
+$(document).bind('keydown', "Alt+x", function assets() {
+   $("#boton-eliminar").click();
+   });
+
+
+
+/*Envia datos del formulario de forma asincrona*/
+$("#enviar").click(function(){
+	if($("#ciproveedor").val()!=""&&$("#nombres").val()!=""){
+		var datos = $("#formu").serialize();
+		$.ajax({
+			type : "POST",
+			url :"agregar_proveedor.html",
+			data : datos,
+			success:function(){
+				$("#modalNuevo").modal("hide");
+				$("#agregado").removeClass('hide');
+				$("#agregado").text("Se agrego el Nuevo Proveedor");
+				setTimeout(function (){
+				$("#contenido").load(ultimolink);
+				},2000);
+
+			}
+		});
+	}
+	else{
+		$(".mensaje-proveedores").text("Debe Rellenar Todos los Datos");
+		setTimeout(function (){
+			$(".mensaje-proveedores").text(" ");
+		},3000);
+	}
+});
+
+/*comprueba la existencia del ci en lka base de datos*/
+$("input[name=ci]").on('blur',function(){
+	$.ajax({
+		type : "POST",
+		url :"verificarCi.html",
+		data : {"ci":$(this).val()},
+		success:function(fat){
+			if(fat!="[]"){
+				
+				if(confirm("El usuario ya esta Registrado\n Desea Editar sus Datos?")){
+					var lista = fat.split(",");
+					$("input[name=nombre]").val(lista[1].substring(lista[1].indexOf("=")+1));
+					$("input[name=apellidos]").val(lista[2].substring(lista[2].indexOf("=")+1));
+					$("input[name=fecha_nac]").val(lista[3].substring(lista[3].indexOf("=")+1));
+				}
+				else{
+					$("input[name=ci]").val("");
+				}
+			}
+		}
+	});
+});
+</script>
+<script>
+ function modificar(id,ci,nombres,celular){
+ 	$("#id1").val(id);
+	 $("#ci1").val(ci);
+	 $("#nombres1").val(nombres);
+	 $("#celular1").val(celular);
+	 $("#abrir-modificar").click();
+ }
+
+ $("#modificar").click(function(){
+	var datos = $("#formu-modificar").serialize();
+	$.ajax({
+		type : "POST",
+		url :"modificar_proveedor.html",
+		data : datos,
+		success:function(){
+			$("#modalModificar").modal("hide");
+			$("#agregado").removeClass('hide');
+			$("#agregado").text("Se Modifico Correctamente el Usuario");
+			setTimeout(function (){
+			$("#contenido").load(ultimolink);
+			},500);
+
+		}
+	});
+});
+
+
+</script>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Ferreteria Juares</title>
+	<link id="bootstrap-style" href="css/bootstrap.css" rel="stylesheet">
+	<link id="bootstrap-style" href="css/font-awesome.css" rel="stylesheet">
+	<style type="text/css">
+	#con{
+		margin-top: 8%;
+		width: 300px;
+	}
+	.input-group-addon{
+		background-color: #337ab7;
+		color: white;
+	}
+	body{
+		background: url("images/bg.jpg") no-repeat;
+		background-size: 100%;
+	}
+	
+	</style>
+
+</head>
+<body  onload="mensaje('${mensajeR}');">
+<center>
+
+<div class="well" id="con">
+	<div class="row">
+		<div>
+			<b>SISTEMA DE REGISTRO Y CONTROL DE INVENTARIO <br> FERRETERIA</b>
+
+		</div>
+		<br>
+		<div class="col-xs-12">
+			<img src="images/usu.png" class="img-respondive img-circle" id="avatar">
+		</div>
+	</div>
+	<br>
+	<form class="login" action="validar.html" method="post">
+		<div class="form-group">
+		<div class="input-group">
+		<div class="input-group-addon"><span class="fa fa-user"></span></div>
+			<input type="text" name="login"class="form-control" placeholder="Login" required>
+		<div class="input-group-btn"></div>
+		</div>
+		</div>
+
+		<div class="form-group">
+		<div class="input-group">
+		<div class="input-group-addon"><span class="fa fa-shield"></span></div>
+			<input type="password" name="passwd" class="form-control" placeholder="Password" required>
+		</div>
+		</div>
+		<button type="submit" class="btn btn-primary btn-block">Iniciar Sesion</button>
+		<br>
+		<div class="alert alert-danger hide" id="barra-mensaje">
+		<button class="close" data-dismiss="alert">&times;</button>
+		Usuario y/o Password Incorrecto
+		</div>
+		<div class="alert alert-warning hide" id="barra-mensaje2">
+		<button class="close" data-dismiss="alert">&times;</button>
+		Usuario Bloqueado
+		</div>
+	</form>
+	
+</div>
+</center>
+
+
+</body>
+<script src="js/jquery-3.1.1.js"></script>
+<script src="js/bootstrap.js"></script>
+
+<script type="text/javascript">
+	setTimeout(function (){
+		$(".alert").fadeOut();
+	},4000);
+	
+	function mensaje(m){
+		if(m=='error'){
+			$("#barra-mensaje").removeClass('hide');
+		}
+		if(m=="bloqueado"){
+			$("#barra-mensaje2").removeClass('hide');
+		}
+	}
+	
+</script>
+</html>

@@ -1,0 +1,51 @@
+<div id="imprimible">
+<center><h2>Reporte de Productos</h2></center>
+<p>Fecha: $fecha</p>
+<table class="table" width="100%">
+	<thead>
+	<tr>
+	<th style="border:solid 1px black;">Cod. Venta</th>
+	<th style="border:solid 1px black;">Nombre</th>
+	<th style="border:solid 1px black;">Cantidad Vendida</th>
+	</tr>
+	</thead>
+	<tbody>
+		#set ($variable=0)
+		#foreach($g in $xlista)
+		<tr>
+			<td>${g.idproducto}</td>
+			<td>${g.nombre} </td>>
+			<td>${g.total} </td>
+			
+		</tr>
+		 #set ($variable = $variable + ${g.total} )
+		#end
+	</tbody>
+</table>
+<hr>
+
+<b style="float:right">Cantidad Vendida. $variable</b>
+
+</div>
+<br><br><br><br>
+
+<script type="text/javascript">
+	function imprimirElemento(elemento){
+	var ventana = window.open('','PRINT', 'height=400,width=400');
+	ventana.document.write('<html><head><title>' + 'Ferreteria' + '</title>');
+	ventana.document.write('</head><body>');
+	ventana.document.write(elemento.innerHTML);
+	ventana.document.write('</body></html>');
+	ventana.document.close();
+	ventana.focus();
+	ventana.print();
+	ventana.close();
+	return true;
+}
+
+$("#imprimir").click(function(){
+	var div = document.querySelector("#imprimible");
+	imprimirElemento(div);
+	
+});
+</script>

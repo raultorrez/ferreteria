@@ -1,0 +1,56 @@
+<div id="imprimible">
+<center><h2>Reporte de Gastos</h2></center>
+<p>Desde: $fecha_ini hasta: $fecha_fin</p>
+<table class="table" width="100%">
+	<thead>
+	<tr>
+	<th style="border:solid 1px black;">Cod. Gasto</th>
+	<th style="border:solid 1px black;">Fecha</th>
+	<th style="border:solid 1px black;">Usuario</th>
+	<th style="border:solid 1px black;">Hora</th>
+	<th style="border:solid 1px black;"  width="40%">Descripcion</th>
+	<th style="border:solid 1px black;">Total</th>
+	</tr>
+	</thead>
+	<tbody>
+		#set ($variable=0)
+		#foreach($g in $xlista)
+		<tr ondblclick="modificar('${g.idgasto}','${g.descripcion}','${g.montogasto}');">
+			<td>${g.idgasto}</td>
+			<td>${g.fechagasto} </td>
+			<td>${g.nombre_usu} ${g.ap_usu} </td>
+			<td>${g.horagasto} </td>
+			<td>${g.descripcion} </td>
+			<td style="text-align:right;" class="contador">${g.montogasto} </td>
+		</tr>
+		 #set ($variable = $variable + ${g.montogasto} )
+		#end
+	</tbody>
+</table>
+<hr>
+
+<b style="float:right">Total Bs. $variable</b>
+
+</div>
+<br><br><br><br>
+
+<script type="text/javascript">
+	function imprimirElemento(elemento){
+	var ventana = window.open('','PRINT', 'height=400,width=400');
+	ventana.document.write('<html><head><title>' + 'Ferreteria' + '</title>');
+	ventana.document.write('</head><body>');
+	ventana.document.write(elemento.innerHTML);
+	ventana.document.write('</body></html>');
+	ventana.document.close();
+	ventana.focus();
+	ventana.print();
+	ventana.close();
+	return true;
+}
+
+$("#imprimir").click(function(){
+	var div = document.querySelector("#imprimible");
+	imprimirElemento(div);
+	
+});
+</script>

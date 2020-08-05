@@ -1,0 +1,47 @@
+<meta charset="utf-8">
+	<link id="dataTables-style" href="css/jquery.dataTables.css" rel="stylesheet">
+<div class="col-md-12">
+<div class="col-md-12 titulo">
+<span>Ventas Realizadas</span>
+<br><br>
+</div>
+
+<table class="table datatable">
+	<thead>
+	<tr>
+	<th>Fecha</th>
+	<th>Hora</th>
+	<th>Cliente</th>
+	<th>Usuario</th>
+	<th>total</th>
+	<th></th>
+	</tr>
+	</thead>
+	<tbody>
+
+		#foreach($u in $xlista)
+		#if(${u.id}!=1)
+		<tr>
+			<td>${u.fechaventa}</td>
+			<td>${u.horaventa}</td>
+			<td>${u.nombre_usu} ${u.ap_usu}</td>
+			<td>${u.nombres}</td>
+			<td>${u.total}</td>
+			<td><a class="boton-menu" href="detalleventa.html?cod=${u.idventa}">Ver detalles</a></td>
+		</tr>
+		#end
+		#end
+	</tbody>
+</table>
+<script src="js/jquery.dataTables.js"></script>
+<script type="text/javascript">
+$(".boton-menu").click(function(e){
+    e.preventDefault();
+    var link =$(this).attr("href");
+    $("#contenido").load(link);
+    ultimolink = link;
+});
+$(document).ready( function (){
+	$('.datatable').dataTable();
+});
+</script>
